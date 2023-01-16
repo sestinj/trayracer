@@ -106,6 +106,24 @@ inline vec3 cross(const vec3 &u, const vec3 &v) {
                 u.e[0]*v.e[1] - u.e[1]*v.e[0]);
 }
 
+inline bool sign(const vec3 &p, const vec3 &u, const vec3 &v) {
+    // The determinant of the matrix whose rows are u, v, and p
+    // Positive if right hand rule followed by u->v->p
+    return dot(cross(u, v), p) < 0;
+}
+
+inline bool inside_triangle(const vec3 &p, const vec3 &a, const vec3 &b, const vec3 &c) {
+    // Check whether p inside triangle abc by checking signs of each side with p.
+    bool b0 = sign(a, b, p);
+    bool b1 = sign(b, c, p);
+    bool b2 = sign(c, a, p);
+
+    bool has_pos = b0 || b1 || b2;
+    bool has_neg = !b0 || !b1 || !b2;
+
+    return !(has_pos && has_neg);
+}
+
 inline vec3 unit_vector(const vec3 &v) {
     return v / v.length();
 }

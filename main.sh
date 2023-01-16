@@ -1,0 +1,1 @@
+g++ -o main main.cpp -std=c++11 && ./main > im.ppm && convert im.ppm im.png
