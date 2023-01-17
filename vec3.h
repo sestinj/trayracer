@@ -167,4 +167,8 @@ vec3 random_in_unit_disk() {
     }
 }
 
+bool intersects_bounding_box(const vec3& r, const vec3[]& bb) {
+    return false;
+}
+
 #endif

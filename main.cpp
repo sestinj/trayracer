@@ -5,6 +5,7 @@
 #include "camera.h"
 #include "material.h"
 #include "triangle.h"
+#include "mesh.h"
 
 // #include "/opt/homebrew/Cellar/tbb/2021.8.0/include/tbb/parallel_for.h"
 #include "/opt/homebrew/Cellar/libomp/15.0.7/include/omp.h"
@@ -81,13 +82,13 @@ int main() {
 
     // Image
     const auto aspect_ratio = 3.0 / 2.0;
-    const int image_width = 400;
+    const int image_width = 200;
     const int image_height = static_cast<int>(image_width / aspect_ratio);
-    const int samples_per_pixel = 40;
+    const int samples_per_pixel = 10;
     const int max_depth = 5;
 
     // Camera
-    point3 lookfrom(0, 0, 10);
+    point3 lookfrom(-1, 10, 10);
     point3 lookat(0,0,0);
     vec3 vup(0,1,0);
     auto dist_to_focus = lookfrom.length();
@@ -109,9 +110,14 @@ int main() {
     world.add(make_shared<sphere>(point3(-1.0,    0.0, -1.0),   0.5, material_center));
     world.add(make_shared<sphere>(point3( 1.0,    0.0, -1.0),   0.5, material_right));
 
-    auto tr = make_shared<triangle>(point3(0,0.5,-1), point3(-1,1,0), point3(1,1,0), material_right);
+    // auto tr = make_shared<triangle>(point3(0,0.5,-1), point3(-1,1,0), point3(1,1,0), material_right);
+    // world.add(tr);
 
-    world.add(tr);
+    auto ico = make_shared<mesh>("assets/icosahedron.ply", material_center, vec3(-1, 0, -3));
+    world.add(ico);
+
+    auto ant = make_shared<mesh>("assets/ant.ply", material_right, vec3(2, 0, -3), vec3(0.1, 0.1, 0.1));
+    world.add(ant);
 
     // Render
     std::cout << "P3\n" << image_width << ' ' << image_height << "\n255\n";
